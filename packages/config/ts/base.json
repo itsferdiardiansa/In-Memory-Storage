@@ -1,9 +1,16 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "module": "CommonJS",
-    "target": "ES5",
+    "target": "ES2015",
     "moduleResolution": "Node",
+    "lib": [
+      "ES2015",
+      "DOM"
+    ],
+    "strict": true,
     "declaration": true,
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "alwaysStrict": true,
@@ -16,6 +23,5 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "strictNullChecks": false
-  },
-  "exclude": ["node_modules"]
+  }
 }
