@@ -6,28 +6,30 @@ import babel from '@rollup/plugin-babel'
 import eslint from '@rollup/plugin-eslint'
 import run from '@rollup/plugin-run'
 import terser from '@rollup/plugin-terser'
+import json from '@rollup/plugin-json'
 
 export default [
   {
     input: 'src/main.ts',
     output: [
       {
-        file: 'dist/index.js',
+        file: 'dist/main.cjs',
         format: 'cjs',
         sourcemap: true,
       },
       {
-        file: 'dist/esm/index.js',
+        file: 'dist/esm/main.js',
         format: 'esm',
         sourcemap: true,
       },
     ],
     watch: {
       include: ['src/**'],
-      // clearScreen: false
+      clearScreen: false,
     },
     plugins: [
       process.env.NODE_ENV === 'development' && run(),
+      json(),
       resolve({
         extensions: ['.ts', '.tsx'],
       }),
@@ -47,8 +49,8 @@ export default [
     ],
   },
   {
-    input: 'dist/esm/types/index.d.ts',
-    output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+    input: 'dist/esm/types/main.d.ts',
+    output: [{ file: 'dist/main.d.ts', format: 'esm' }],
     plugins: [dts()],
   },
 ]

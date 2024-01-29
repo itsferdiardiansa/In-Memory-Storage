@@ -1,7 +1,8 @@
+import Utils from '@/libs/utils'
 import type { TreeNode } from './types'
 
 class DBTreeNode<K> implements TreeNode<K> {
-  private _referenceKey = 'id'
+  _referenceKey = 'id'
 
   keys = []
   values = []
@@ -25,7 +26,7 @@ class DBTreeNode<K> implements TreeNode<K> {
     return this.values.length
   }
 
-  binarySearch(payload: K): TreeNode<K> {
+  getSelectedNode(payload: K): TreeNode<K> {
     const { _referenceKey } = this
 
     let node = Object.assign(this)
@@ -63,9 +64,9 @@ class DBTreeNode<K> implements TreeNode<K> {
         n = this.values.length
 
       if (data[_referenceKey] < values[i][_referenceKey]) {
-        this.keys = [...this.keys.slice(0, i), data[_referenceKey], ...this.keys.slice(i)]
+        this.keys = Utils.insertObjectAt(this.keys, data[_referenceKey], i)
 
-        this.values = [...this.values.slice(0, i), data, ...this.values.slice(i)]
+        this.values = Utils.insertObjectAt(this.values, data, i)
 
         break
       } else if (i === n - 1) {
@@ -74,6 +75,20 @@ class DBTreeNode<K> implements TreeNode<K> {
         break
       }
     }
+  }
+
+  getFirstLeafNode() {
+    const node = Object.assign(this)
+
+    const traverseNode = (currentNode: TreeNode<K>): TreeNode<K> => {
+      if (currentNode.isLeaf) return <TreeNode<K>>currentNode
+
+      currentNode = traverseNode(<TreeNode<K>>currentNode.keys[0])
+
+      return currentNode
+    }
+
+    return traverseNode(node)
   }
 }
 
