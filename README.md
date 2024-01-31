@@ -6,7 +6,7 @@ A simple app by using a custom data storage.
 
 - [﻿Typescript](https://www.typescriptlang.org/)
 - [﻿Nx](https://nx.dev/)
-- [﻿PNPM](https://pnpm.io/) Workspace
+- [﻿PNPM](https://pnpm.io/)
 - [﻿NestJS](https://nestjs.com/)
 - [﻿Jest](https://jestjs.io/)
 
@@ -33,13 +33,11 @@ This will install all dependencies for the packages and apps within the workspac
 pnpm run start:api
 ```
 
-This will launch in a port `﻿http://localhost:5763` .
+This will launch in a port `[﻿http://localhost:5763](http://localhost:5763/)` .
 
-Next, use [﻿Postman](https://www.postman.com/)﻿ to explore apis.
-
-Download [﻿this collections](https://api.postman.com/collections/1158990-ddafecb9-6894-4ea6-9c50-d5ce02825dc4?access_key=PMAT-01HNGTQRXWNNRY7XMNZCABE3F5)﻿ and import to your Postman.
-
-**Run test**
+- Next, use [﻿Postman](https://www.postman.com/)﻿ to explore apis.
+- Download [﻿this collections](https://api.postman.com/collections/1158990-ddafecb9-6894-4ea6-9c50-d5ce02825dc4?access_key=PMAT-01HNGTQRXWNNRY7XMNZCABE3F5)﻿ and import to your Postman.
+- **Run test**
 
 ```
 pnpm run test
