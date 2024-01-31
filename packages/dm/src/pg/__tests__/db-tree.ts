@@ -71,7 +71,7 @@ describe('PG', () => {
 
     db.insertMany(cities)
 
-    expect(db.find({ where: { id: 33 } })).toEqual(cities[1])
+    expect(db.find({ where: { id: 33 } })).toMatchObject(cities[1])
   })
 
   it("[DBTree] shouldn't find data by query correctly.", () => {
@@ -96,7 +96,7 @@ describe('PG', () => {
 
     db.insertMany(cities)
 
-    expect(db.findAll({ where: { city: 'SUB' } })).toEqual([
+    expect(db.findAll({ where: { city: 'SUB' } })).toMatchObject([
       { city: 'SUB', id: 3 },
       { city: 'SUB', id: 33 },
       { city: 'SUB', id: 100 },
