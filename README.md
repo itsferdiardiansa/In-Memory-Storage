@@ -33,7 +33,7 @@ This will install all dependencies for the packages and apps within the workspac
 pnpm run start:api
 ```
 
-This will launch in a port `﻿http://localhost:5376` .
+This will launch in a port `﻿http://localhost:5763` .
 
 Next, use [﻿Postman](https://www.postman.com/)﻿ to explore apis.
 
