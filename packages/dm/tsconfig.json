@@ -1,0 +1,20 @@
+{
+  "extends": "@zion/ts-config/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "declarationDir": "types",
+    "moduleResolution": "Node",
+    "paths": {
+      "@root/*": ["./*"],
+      "@/*": ["./src/*"]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
