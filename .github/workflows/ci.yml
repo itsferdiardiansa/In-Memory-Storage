@@ -16,8 +16,8 @@ jobs:
           fetch-depth: 0
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v2
-        with:
-          main-branch-name: ${{needs.branch-info.outputs.base-branch-name}}
+        # with:
+        #   main-branch-name: ${{needs.branch-info.outputs.base-branch-name}}
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.1
         with:
@@ -31,3 +31,12 @@ jobs:
         run: pnpm install --no-frozen-lockfile
       - name: Testing
         run: pnpm run test
+  upload_coverage:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        env:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: itsferdiardiansa/Zion
