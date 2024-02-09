@@ -1,0 +1,33 @@
+name: Zion.io CI
+on:
+  push:
+  pull_request:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+        with:
+          main-branch-name: ${{needs.branch-info.outputs.base-branch-name}}
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.1
+        with:
+          version: '7.x'
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Testing
+        run: pnpm run test
