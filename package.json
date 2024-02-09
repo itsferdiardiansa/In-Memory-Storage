@@ -10,7 +10,8 @@
     "format:write": "pnpm nx run-many -t format:write",
     "lint": "pnpm nx run-many -t lint",
     "lint:fix": "pnpm nx run-many -t lint:fix",
-    "test": "pnpm nx run-many -t test"
+    "test": "pnpm nx run-many -t test",
+    "start:api": "pnpm nx start:dev @zion/api"
   },
   "private": true,
   "devDependencies": {

@@ -1,11 +1,23 @@
-import type { TreeNode, FindQuery, DBTreeSearchInterface } from './types'
+import type { TreeNode, FindQuery, DBTreeSearchInterface, DefaultRecord } from './types'
 import Utils from '@/libs/utils'
 
 class DBTreeSearch<K> implements DBTreeSearchInterface<K> {
   currentNode!: TreeNode<K>
+  queryVersionKey = '__queryId'
+  referenceId = '$refId'
   relationType = {
     'one-to-one': 'findByQuery',
     'one-to-many': 'findAllByQuery',
+  }
+
+  appendVersion(record: K) {
+    const { queryVersionKey } = this
+    return { [queryVersionKey]: crypto.randomUUID(), ...record }
+  }
+
+  setReferenceId(record: K, value: DefaultRecord['id']) {
+    const { referenceId } = this
+    record[referenceId] = value
   }
 
   searchComparator(target: FindQuery['where'], comparator: K) {
@@ -45,11 +57,14 @@ class DBTreeSearch<K> implements DBTreeSearchInterface<K> {
     for (const key in relationalQuery) {
       const currentQuery = relationalQuery[key]
       const fn = this[relationType[currentQuery.type]].bind(this)
-
-      if (cachedRecord.has(record[currentQuery.referenceKey])) continue
+      let visited = false
 
       if (record[currentQuery.primaryKey] === record[currentQuery.referenceKey]) {
         throw new Error('Potentially contains a circular relation')
+      }
+
+      if (cachedRecord.has(record[currentQuery.referenceKey])) {
+        visited = true
       }
 
       const queryData = fn(this.currentNode, {
@@ -66,12 +81,27 @@ class DBTreeSearch<K> implements DBTreeSearchInterface<K> {
         for (const data of queryData) {
           record[key].push(data)
 
+          if (visited) {
+            const n = record[key].length - 1
+
+            record[key][n] = {
+              $refId: data[currentQuery.referenceKey],
+            }
+            continue
+          }
+
           this.findRelation(query, data, cachedRecord)
         }
       } else {
         record[key] = queryData
 
-        this.findRelation(query, record, cachedRecord)
+        if (visited) {
+          record[key] = {
+            $refId: queryData[currentQuery.referenceKey],
+          }
+          continue
+        }
+        this.findRelation(query, queryData, cachedRecord)
       }
 
       this.searchAggregation(key, record, query)
@@ -83,17 +113,17 @@ class DBTreeSearch<K> implements DBTreeSearchInterface<K> {
   findByField(node: TreeNode<K>, query: FindQuery) {
     const selectedNode = node.getFirstLeafNode()
 
-    const collectRecord = (node: TreeNode<K>, record: K): K => {
+    const collectRecords = (node: TreeNode<K>, record: K): K => {
       if (!node) return record
 
       record = this.findRecord(node, query)
 
       if (record) return record
 
-      return collectRecord(node.next, record)
+      return collectRecords(node.next, record)
     }
 
-    return collectRecord(selectedNode, <K>{})
+    return collectRecords(selectedNode, <K>{})
   }
 
   findById(node: TreeNode<K>, query: FindQuery) {
@@ -124,10 +154,12 @@ class DBTreeSearch<K> implements DBTreeSearchInterface<K> {
     }
 
     const record = node.values[selectedIndex]
+    const versionRecord = this.appendVersion(record)
+    const cachedRecord = new Set<string | number>()
 
-    this.findRelation(query, record)
+    this.findRelation(query, versionRecord, cachedRecord)
 
-    return record || null
+    return record ? versionRecord : null
   }
 
   findRecords(node: TreeNode<K>, query: FindQuery) {
@@ -139,13 +171,15 @@ class DBTreeSearch<K> implements DBTreeSearchInterface<K> {
 
     for (const index in node.keys) {
       const record = node.values[index]
+      const versionRecord = this.appendVersion(record)
+      const cachedRecord = new Set<string | number>()
 
       if (searchComparator(whereQuery, record)) {
         if ('relations' in query) {
-          this.findRelation(query, record)
+          this.findRelation(query, versionRecord, cachedRecord)
         }
 
-        records.push(record)
+        records.push(versionRecord)
       }
     }
 

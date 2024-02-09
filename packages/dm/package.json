@@ -9,6 +9,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "show-config": "pnpm tsc --showConfig",
+    "prepare": "pnpm run build",
     "build": "rimraf dist && rollup -c",
     "dev": "NODE_ENV=development rollup -c --watch",
     "test": "jest",

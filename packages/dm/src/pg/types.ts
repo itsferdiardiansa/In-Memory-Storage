@@ -63,7 +63,11 @@ export interface TreeNode<KData> {
 
 // ============= DBTree Search ============
 export interface DBTreeSearchInterface<K> {
+  queryVersionKey: string
+  referenceId: string
   relationType: MappadTypes<RelationalType, string>
+  appendVersion(record: K): K & { [Key: string]: ReturnType<Crypto['randomUUID']> }
+  setReferenceId(record: K, value: DefaultRecord['id']): void
   searchComparator: (target: FindQuery['where'], comparator: K) => boolean
   findRelation(query: FindQuery, record: K, cachedRecord: Set<number | string>): K
   findByField: (node: TreeNode<K>, query: FindQuery) => K
