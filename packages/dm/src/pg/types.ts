@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 type DefaultIDKey = 'id'
 
 type MappadTypes<K, T> = {
@@ -18,7 +20,7 @@ export type DefaultRecord = {
     | number
     | NumberConstructor
     | StringConstructor
-    | ReturnType<Crypto['randomUUID']>
+    | ReturnType<uuidv4>
 }
 
 export type FindQuery<P = Record<string, never | string | number>> = {
@@ -66,7 +68,7 @@ export interface DBTreeSearchInterface<K> {
   queryVersionKey: string
   referenceId: string
   relationType: MappadTypes<RelationalType, string>
-  appendVersion(record: K): K & { [Key: string]: ReturnType<Crypto['randomUUID']> }
+  appendVersion(record: K): K & { [Key: string]: ReturnType<uuidv4> }
   setReferenceId(record: K, value: DefaultRecord['id']): void
   searchComparator: (target: FindQuery['where'], comparator: K) => boolean
   findRelation(query: FindQuery, record: K, cachedRecord: Set<number | string>): K

@@ -1,6 +1,6 @@
+import { v4 as uuidv4 } from 'uuid'
 import type { TreeNode, FindQuery, DBTreeSearchInterface, DefaultRecord } from './types'
 import Utils from '@/libs/utils'
-
 class DBTreeSearch<K> implements DBTreeSearchInterface<K> {
   currentNode!: TreeNode<K>
   queryVersionKey = '__queryId'
@@ -12,7 +12,7 @@ class DBTreeSearch<K> implements DBTreeSearchInterface<K> {
 
   appendVersion(record: K) {
     const { queryVersionKey } = this
-    return { [queryVersionKey]: crypto.randomUUID(), ...record }
+    return { [queryVersionKey]: uuidv4(), ...record }
   }
 
   setReferenceId(record: K, value: DefaultRecord['id']) {
