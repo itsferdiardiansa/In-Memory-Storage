@@ -11,6 +11,7 @@
     "lint": "pnpm nx run-many -t lint",
     "lint:fix": "pnpm nx run-many -t lint:fix",
     "test": "pnpm nx run-many -t test",
+    "test:coverage": "pnpm nx run-many -t test:coverage",
     "start:api": "pnpm nx start:dev @zion/api"
   },
   "private": true,
