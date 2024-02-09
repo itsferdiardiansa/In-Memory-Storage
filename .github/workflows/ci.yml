@@ -1,6 +1,5 @@
 name: Zion.io CI
 on:
-  push:
   pull_request:
 
 permissions:
