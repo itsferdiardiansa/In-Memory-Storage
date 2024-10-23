@@ -2,6 +2,8 @@
 
 This project aims to develop an in-memory storage solution, which is a fast and efficient temporary data storage system. This in-memory storage stores data in the main memory (RAM), allowing faster access compared to disk storage. This solution is ideal for applications requiring high performance and low latency, such as data caching, real-time data processing, or testing applications without involving a permanent database.
 
+![diagram-export-23-10-2024-14_19_08.png](https://eraser.imgix.net/workspaces/kdq8fSOE8M23EBUYMbFW/2XG2BGojRDZ1XQRU8zKzU21QVJH3/hvs5a2jIUjaqHsMVy5qDL.png?ixlib=js-3.7.0 "diagram-export-23-10-2024-14_19_08.png")
+
 The main features implemented in this project include:
 
 1. **CR Operations**: Supports Create and Read operations to efficiently manage stored data.
@@ -10,7 +12,6 @@ The main features implemented in this project include:
 4. **Expansion and Scalability**: Enables storage capacity management with automatic eviction of irrelevant or outdated data.
 5. **Performance Optimization**: Designed to minimize access time and maximize throughput, making it highly efficient for high-load applications.
 This project is suitable for various scenarios, such as storing user session data, caching query results to reduce the load on the main database, or serving as a buffer for batch data processing. With an in-memory approach, applications can respond to requests more quickly, enhancing user experience and overall system efficiency.
-
 
 ### **Built with:**
 
